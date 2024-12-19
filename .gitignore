@@ -1,0 +1,9 @@
+.cache/
+aoc.json
+compile_commands.json
+aoc.log
+build
+compile_commands.json
+.idea/
+vgcore.*
+input/
