@@ -69,6 +69,7 @@ class Day {
 
         const std::string f_name = "input/day_" + std::to_string(m_day);
         const int fd = open(f_name.c_str(), O_RDONLY);
+        JC_ASSERT(fd != -1, "Failed to open file: " << f_name);
         fstat(fd, &sb);
 
         const auto data = static_cast<char *>(
@@ -127,6 +128,7 @@ class LineByLineDay : public Day {
 
         const std::string f_name = "input/day_" + std::to_string(m_day);
         const int fd = open(f_name.c_str(), O_RDONLY);
+        JC_ASSERT(fd != -1, "Failed to open file: " << f_name);
         fstat(fd, &sb);
 
         {
