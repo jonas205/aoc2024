@@ -14,7 +14,7 @@ void Day19::map_towels(const std::string &line) {
             m_towel_size++;
             continue;
         }
-        m_towel[m_towel_size][m_towel_sizes[m_towel_size]++] = char_to_color(c);
+        m_towel[m_towel_size][m_towel_sizes[m_towel_size]++] = c;
         i++;
     }
 }
@@ -31,11 +31,11 @@ size_t Day19::is_possible(const std::string &line, const size_t pos,
     size_t erg = 0;
 
     for (size_t i = 0; i < m_towel_size; i++) {
-        const Color *towel = m_towel[i];
+        const char *towel = m_towel[i];
 
         bool possible = true;
         for (size_t j = 0; j < m_towel_sizes[i]; j++) {
-            const char c = color_to_char(towel[j]);
+            const char c = towel[j];
             if (c == '\n' || c != line[pos + j]) {
                 possible = false;
                 break;
