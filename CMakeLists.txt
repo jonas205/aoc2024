@@ -12,7 +12,7 @@ set(HEADERS
 day.hpp
 )
 
-foreach(i RANGE 1 19)
+foreach(i RANGE 1 20)
     list(APPEND SOURCES "day_${i}.cpp")
     list(APPEND HEADERS "day_${i}.hpp")
 endforeach()
