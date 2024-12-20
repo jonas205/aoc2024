@@ -132,13 +132,15 @@ void Day20::post_processing() {
         JC_PROFILE_SCOPE("Better Cheater");
         uint64_t sum = 0;
 
-#pragma omp parallel for collapse(2) reduction(+ : sum)
+#pragma omp parallel for reduction(+ : sum)
         for (size_t i = 0; i < m_board.points_length; i++) {
             Point &p = m_board.points[i];
             for (size_t j = i + 21; j < m_board.points_length; j++) {
                 Point &p2 = m_board.points[j];
                 int32_t distance = std::abs(p.x - p2.x) + std::abs(p.y - p2.y);
                 if (distance > 20) {
+                    int32_t skip = distance - 21;
+                    j += skip > 0 ? skip : 0;
                     continue;
                 }
                 uint32_t saved = p2.value - p.value - distance;
