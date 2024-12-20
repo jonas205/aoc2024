@@ -65,6 +65,8 @@ void day20_value_assigner(Day20::Board &board, Day20 &day, int32_t x,
         board.last_value++;
     }
 
+    board.points[board.points_length++] = {x, y, board.last_value};
+
     board.cells[y][x].value = board.last_value;
 }
 
@@ -83,35 +85,6 @@ void day20_cheater(Day20::Board &board, Day20 &day, int32_t x, int32_t y) {
         }
         day.m_result.part1 += 1;
     }
-}
-
-void day20_better_cheater(Day20::Board &board, Day20 &day, int32_t x,
-                          int32_t y) {
-    uint32_t value = board.get(x, y);
-
-#define MIN(x, y) ((x < y) ? x : y)
-#define MAX(x, y) ((x > y) ? x : y)
-    for (int32_t y2 = MAX(y - 20, 0);
-         y2 <= MIN(y + 20, static_cast<int32_t>(board.height)); y2++) {
-        int32_t dy_abs = std::abs(y - y2);
-        for (int32_t x2 = MAX(x - 20 + dy_abs, 0);
-             x2 <= MIN(x + 20 - dy_abs, static_cast<int32_t>(board.width));
-             x2++) {
-            uint32_t other = board.get(x2, y2);
-            int32_t distance = dy_abs + std::abs(x - x2);
-            if (other == UINT32_MAX || other <= value + distance) {
-                continue;
-            }
-            uint32_t saved = other - value - distance;
-            if (saved < 100) {
-                continue;
-            }
-            // JC_COUT << saved << ',';
-            day.m_result.part2 += 1;
-        }
-    }
-#undef MIN
-#undef MAX
 }
 
 void Day20::process_line(const std::string &line) {
@@ -147,8 +120,36 @@ void Day20::process_line(const std::string &line) {
     m_board.height++;
 }
 void Day20::post_processing() {
-    m_board.walk_board(*this, day20_value_assigner);
-    m_board.walk_board(*this, day20_cheater);
-    m_board.walk_board(*this, day20_better_cheater);
+    {
+        JC_PROFILE_SCOPE("Value assigner");
+        m_board.walk_board(*this, day20_value_assigner);
+    }
+    {
+        JC_PROFILE_SCOPE("Cheater");
+        m_board.walk_board(*this, day20_cheater);
+    }
+    {
+        JC_PROFILE_SCOPE("Better Cheater");
+        uint64_t sum = 0;
+
+#pragma omp parallel for collapse(2) reduction(+ : sum)
+        for (size_t i = 0; i < m_board.points_length; i++) {
+            Point &p = m_board.points[i];
+            for (size_t j = i + 21; j < m_board.points_length; j++) {
+                Point &p2 = m_board.points[j];
+                int32_t distance = std::abs(p.x - p2.x) + std::abs(p.y - p2.y);
+                if (distance > 20) {
+                    continue;
+                }
+                uint32_t saved = p2.value - p.value - distance;
+                if (saved < 100) {
+                    continue;
+                }
+                sum += 1;
+            }
+        }
+#pragma omp atomic
+        m_result.part2 += sum;
+    }
 }
 }  // namespace AOC

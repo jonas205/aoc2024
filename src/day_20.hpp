@@ -24,12 +24,20 @@ class Day20 final : public LineByLineDay {
         uint32_t value = UINT32_MAX;
     };
 
+    struct Point {
+        int32_t x, y;
+        uint32_t value;
+    };
+
     struct Board {
         Cell cells[150][150]{};
         size_t width = 0, height = 0;
         int32_t start_x{}, start_y{}, end_x{}, end_y{};
 
-        int32_t last_value{};
+        Point points[10000];
+        size_t points_length = 0;
+
+        uint32_t last_value{};
 
         void print();
         void walk_board(Day20 &day,
@@ -49,8 +57,6 @@ class Day20 final : public LineByLineDay {
                                      int32_t y);
     friend void day20_cheater(Day20::Board &board, Day20 &day, int32_t x,
                               int32_t y);
-    friend void day20_better_cheater(Day20::Board &board, Day20 &day, int32_t x,
-                                     int32_t y);
 };
 
 }  // namespace AOC
