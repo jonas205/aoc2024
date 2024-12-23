@@ -12,16 +12,14 @@ class Day22 final : public LineByLineDay {
     Result expected() override { return {12664695565, 1444}; }
     void post_processing() override;
    private:
-    void crime_against_programing(uint64_t *numbers);
-    void check_sequence(uint64_t *numbers, int32_t a, int32_t b, int32_t c,
-                        int32_t d);
+    int32_t sum_arr[19][19][19][19] = {{{{0}}}};
+    uint64_t last_seen_arr[19][19][19][19] = {{{{0}}}};
 
-    uint64_t sum[19][19][19][19] = {{{{0}}}};
-    uint64_t sum_get(int32_t a, int32_t b, int32_t c, int32_t d) {
-        return sum[a + 9][b + 9][c + 9][d + 9];
+    int32_t &sum(int32_t a, int32_t b, int32_t c, int32_t d) {
+        return sum_arr[a + 9][b + 9][c + 9][d + 9];
     }
-    void sum_add(int32_t a, int32_t b, int32_t c, int32_t d, uint64_t value) {
-        sum[a + 9][b + 9][c + 9][d + 9] += value;
+    uint64_t &last_seen(int32_t a, int32_t b, int32_t c, int32_t d) {
+        return last_seen_arr[a + 9][b + 9][c + 9][d + 9];
     }
 };
 }  // namespace AOC
