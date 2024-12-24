@@ -166,4 +166,31 @@ class LineByLineDay : public Day {
     Result expected() override = 0;
 };
 
+class StringLineDay : public LineByLineDay {
+   public:
+    explicit StringLineDay(const int n) : LineByLineDay(n) {}
+
+   protected:
+    virtual void check_result() override {
+        const auto [part1, part2] = string_expected();
+
+        if (m_result.part1 == part1) {
+            info("   Part 1: " << m_result.part1);
+        } else {
+            trace("(Part 2: " << m_result.part2 << ')');
+            die("Part 1: " << m_result.part1 << " (expected " << part1 << ')');
+        }
+        if (m_result.part2 == part2) {
+            info("   Part 2: " << m_result.part2);
+        } else {
+            die("Part 2: " << m_result.part2 << " (expected " << part2 << ')');
+        }
+    }
+
+    virtual Result expected() override { return {0, 0}; }
+    virtual StringResult string_expected() = 0;
+
+    StringResult m_result;
+};
+
 }  // namespace AOC

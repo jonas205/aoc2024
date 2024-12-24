@@ -15,6 +15,7 @@
 #include "day_20.hpp"
 #include "day_21.hpp"
 #include "day_22.hpp"
+#include "day_23.hpp"
 #include "day_3.hpp"
 #include "day_4.hpp"
 #include "day_5.hpp"
@@ -36,7 +37,7 @@ void run_all() {
         new Day6(),  new Day7(),  new Day8(),  new Day9(),  new Day10(),
         new Day11(), new Day12(), new Day13(), new Day14(), new Day15(),
         new Day16(), new Day17(), new Day18(), new Day19(), new Day20(),
-        new Day21(), new Day22(),
+        new Day21(), new Day22(), new Day23(),
     };
     constructor_timer.stop();
 

@@ -12,7 +12,7 @@ set(HEADERS
 day.hpp
 )
 
-foreach(i RANGE 1 22)
+foreach(i RANGE 1 24)
     list(APPEND SOURCES "day_${i}.cpp")
     list(APPEND HEADERS "day_${i}.hpp")
 endforeach()
@@ -42,7 +42,8 @@ target_compile_options(aoc PUBLIC -Werror=type-limits -Wsuggest-attribute=const 
 if (CMAKE_BUILD_TYPE STREQUAL "debug")
     target_compile_definitions(aoc PUBLIC -DJC_PROFILE)
 else ()
-    target_compile_definitions(aoc PUBLIC -DJC_NO_TRACE)
+    target_compile_definitions(aoc PUBLIC -DJC_NO_TRACE -DJC_PROFILE)
+    # target_compile_definitions(aoc PUBLIC -DJC_NO_TRACE)
     set_target_properties(aoc PROPERTIES UNITY_BUILD ON UNITY_BUILD_MODE BATCH UNITY_BUILD_BATCH_SIZE 32)
 endif ()
 
